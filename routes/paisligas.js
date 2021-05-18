@@ -11,7 +11,7 @@ router.get('/list', async (req, res) =>{
         const paisliga = await Paisliga.find();
         res.json(paisliga);
     } catch (error) {
-        
+        console.log(error);
     }
 });
 
