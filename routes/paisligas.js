@@ -5,6 +5,16 @@ const Paisliga = require('../models/Paisliga');
 
 const {API_FOOTBALL_LEAGUE, API_KEY, API_HOST} = process.env;
 //GET ALL THE POST
+
+router.get('/list', async (req, res) =>{
+    try {
+        const paisliga = await Paisliga.find();
+        res.json(paisliga);
+    } catch (error) {
+        
+    }
+});
+
 router.get('/save', async (req, res) => {
 
     try {
