@@ -8,7 +8,7 @@ const {API_FOOTBALL_LEAGUE, API_KEY, API_HOST} = process.env;
 
 router.get('/list', async (req, res) =>{
     try {
-        const paisliga = await Paisliga.find();
+        const paisliga = await Paisliga.find().sort({ligas: {$elemMatch: { "_id": 1}}});
         res.json(paisliga);
     } catch (error) {
         console.log(error);
