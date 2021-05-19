@@ -15,8 +15,10 @@ app.get('/', (req,res) => {
 
 
 const paisligaRoute = require('./routes/paisligas');
+const fixtureRoute = require('./routes/fixture');
 
 app.use('/paisliga', paisligaRoute);
+app.use('/fixture', fixtureRoute);
 
 mongoose.connect(
     process.env.DB_CONNECTION, 
