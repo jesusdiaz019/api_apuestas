@@ -38,19 +38,25 @@ router.get('/save', async (req, res) => {
         if (api_res.error){
             res.json(api_res.error);
         }else if(api_res.body.response != 0){
-            console.log(api_res.body.response);
             var data = api_res.body.response;
             var list = [];
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+            today = yyyy + '-' + mm + '-' + dd;
             for(var i=0; i<data.length ;i++){
-                list.push({
-                    _id: data[i].league.id,
-                    liga: data[i].league.name,
-                    tipo_liga: data[i].league.type,
-                    logo: data[i].league.logo,
-                    fecha_inicio: data[i].seasons[0].start,
-                    fecha_fin: data[i].seasons[0].end,
-                    estado: data[i].seasons[0].current
-                });               
+                if(today<=data[i].seasons[0].end){
+                    list.push({
+                        _id: data[i].league.id,
+                        liga: data[i].league.name,
+                        tipo_liga: data[i].league.type,
+                        logo: data[i].league.logo,
+                        fecha_inicio: data[i].seasons[0].start,
+                        fecha_fin: data[i].seasons[0].end,
+                        estado: data[i].seasons[0].current
+                    });   
+                }            
             }
             (async () => {
                 try {
