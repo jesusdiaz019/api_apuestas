@@ -13,6 +13,7 @@ router.get('/list', async (req, res) =>{
             { $unwind: '$ligas' },
 
             { $sort: {
+                'pais': 1,
                 'ligas._id': 1
             }},
             {$group: {_id: '$_id', 'pais': {$first: '$pais'},'ligas': {
