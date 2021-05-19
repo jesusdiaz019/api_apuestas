@@ -9,15 +9,15 @@ const {API_FOOTBALL_LEAGUE, API_KEY, API_HOST} = process.env;
 router.get('/list', async (req, res) =>{
     try {
         const paisliga = await Paisliga.aggregate([
-            // Initial document match (uses index, if a suitable one is available)
-            // Expand the scores array into a stream of documents
+
             { $unwind: '$ligas' },
-            
-            // Filter to 'homework' scores 
-            // Sort in descending order
+
             { $sort: {
                 'ligas._id': 1
-            }}
+            }},
+            {$group: {_id: '$_id', 'pais': {$first: '$pais'},'ligas': {
+                $push: '$ligas'
+            }}},
         ]);
         res.json(paisliga);
     } catch (error) {
