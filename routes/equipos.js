@@ -7,16 +7,16 @@ const moment = require('moment-timezone');
 const {API_FOOTBALL_TEAMS, API_KEY, API_HOST} = process.env;
 //GET ALL THE POST
 
-/*
+
 router.get('/list/:id', async (req, res) =>{
     try {
         var id = req.params.id;
-        const fixture = await Fixture.find({ liga: id });
-        res.json(fixture);
+        const equipos = await Equipos.find({ liga: id });
+        res.json(equipos);
     } catch (error) {
         console.log(error);
     }
-});*/
+});
 
 router.get('/save', async (req, res) => {
 
