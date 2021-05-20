@@ -11,7 +11,7 @@ const {API_FOOTBALL_TEAMS, API_KEY, API_HOST} = process.env;
 router.get('/list/:id', async (req, res) =>{
     try {
         var id = req.params.id;
-        const equipos = await Equipos.find({ liga: id });
+        const equipos = await Equipos.find({ _id: id });
         res.json(equipos);
     } catch (error) {
         console.log(error);
