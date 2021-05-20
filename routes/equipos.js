@@ -21,7 +21,7 @@ router.get('/list/:id', async (req, res) =>{
 router.get('/save', async (req, res) => {
 
     try {
-        var api_req = unirest("GET", API_FOOTBALL_TEAM);
+        var api_req = unirest("GET", API_FOOTBALL_TEAMS);
         var pais = req.query.country;
 
         api_req.query({
