@@ -22,7 +22,40 @@ router.get('/example', async (req, res)=>{
 router.get('/list/:id', async (req, res) =>{
     try {
         var id = req.params.id;
-        const fixture = await Fixture.find({ liga: id });
+        const fixture = await Fixture.aggregate([
+            {$match: { liga: id}},
+
+            {$lookup: {
+                from: "equipos",
+                localField: "equipos.local._id",
+                foreignField: "_id",
+                as: "equipolocal"
+
+            }},
+            {$lookup: {
+                from: "equipos",
+                localField: "equipos.visitante._id",
+                foreignField: "_id",
+                as: "equipovisitante"
+
+            }},
+            {$project: {
+                _id: 1,
+                liga_id: "$liga",
+                fecha: "$fecha",
+                lugar: "$lugar",
+                estadio: "$estadio",
+                equipos: {
+                    local: "$equipolocal",
+                    visitante: "$equipovisitante"
+                },
+                score: "$score",
+                estado: "$estado"
+            }},
+            {$sort: {
+                fecha: 1
+            }}
+        ]);
         res.json(fixture);
     } catch (error) {
         console.log(error);
@@ -114,9 +147,7 @@ router.get('/save', async (req, res) => {
                         });
                         if(result.n == 0){
                             const save = await fixture.save();
-                        }else if(result.nModified == 0){
-                        }else{
-                        }
+                        };
                     } catch (error) {
                         console.log(error+"xd");
                     }
