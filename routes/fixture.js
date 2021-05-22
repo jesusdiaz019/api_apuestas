@@ -22,9 +22,12 @@ router.get('/example', async (req, res)=>{
 router.get('/list/:id', async (req, res) =>{
     try {
         var id = req.params.id;
+        var fecha = moment.tz('America/Lima');
+        var fecha_int = parseInt(fecha.format('YYYY'))+1;
+        var fecha_desde = moment.utc(fecha).tz('America/Lima').format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]');
+        var fecha_hasta = fecha_int.toString()+'-01-01T00:01:00.000Z';
         const fixture = await Fixture.aggregate([
-            {$match: { liga: id}},
-
+            {$match: { liga: id, fecha: { $gt: new Date(fecha_desde), $lt: new Date(fecha_hasta)}}},
             {$lookup: {
                 from: "equipos",
                 localField: "equipos.local._id",
