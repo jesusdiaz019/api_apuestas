@@ -42,6 +42,13 @@ router.get('/list/:id', async (req, res) =>{
                 as: "equipovisitante"
 
             }},
+            {$lookup: {
+                from: "probabilidades",
+                localField: "_id",
+                foreignField: "_id",
+                as: "probabilidad"
+
+            }},
             {$project: {
                 _id: 1,
                 liga_id: "$liga",
@@ -52,6 +59,7 @@ router.get('/list/:id', async (req, res) =>{
                     local: "$equipolocal",
                     visitante: "$equipovisitante"
                 },
+                probabilidades: "$probabilidad",
                 score: "$score",
                 estado: "$estado"
             }},

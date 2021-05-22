@@ -17,10 +17,14 @@ app.get('/', (req,res) => {
 const paisligaRoute = require('./routes/paisligas');
 const fixtureRoute = require('./routes/fixture');
 const equiposRoute = require('./routes/equipos');
+const casasapuestasRoute = require('./routes/casasapuestas');
+const probabilidadesRoute = require('./routes/probabilidades');
 
 app.use('/paisliga', paisligaRoute);
 app.use('/fixture', fixtureRoute);
 app.use('/equipos', equiposRoute);
+app.use('/casasapuestas', casasapuestasRoute);
+app.use('/probabilidades', probabilidadesRoute);
 
 mongoose.connect(
     process.env.DB_CONNECTION, 
