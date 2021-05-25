@@ -26,13 +26,13 @@ router.get('/list', async (req, res) =>{
     }
 });
 
-router.get('/save', async (req, res) => {
+router.post('/save', async (req, res) => {
 
     try {
         var api_req = unirest("GET", API_FOOTBALL_LEAGUE);
-        var pais = req.query.pais;
-        var temporada = req.query.temporada;
-        var estado = req.query.estado;
+        var pais = req.body.pais;
+        var temporada = req.body.temporada;
+        var estado = req.body.estado;
 
         api_req.query({
             "country": pais,
