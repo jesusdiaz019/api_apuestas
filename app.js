@@ -19,12 +19,14 @@ const fixtureRoute = require('./routes/fixture');
 const equiposRoute = require('./routes/equipos');
 const casasapuestasRoute = require('./routes/casasapuestas');
 const probabilidadesRoute = require('./routes/probabilidades');
+const paisesRoute = require('./routes/paises');
 
 app.use('/paisliga', paisligaRoute);
 app.use('/fixture', fixtureRoute);
 app.use('/equipos', equiposRoute);
 app.use('/casasapuestas', casasapuestasRoute);
 app.use('/probabilidades', probabilidadesRoute);
+app.use('/paises', paisesRoute);
 
 mongoose.connect(
     process.env.DB_CONNECTION, 

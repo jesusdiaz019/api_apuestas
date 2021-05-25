@@ -38,29 +38,31 @@ router.get('/save', async (req, res) => {
             res.json(api_res.error);
         }else if(api_res.body.response != 0){
             var data = api_res.body.response;
+            var message = [];
             for(var i=0; i<data.length ;i++){
-                (async () => {
-                    try {
-                        const equipos = new Equipos({
-                            _id: data[i].team.id,
-                            name: data[i].team.name,
-                            pais: data[i].team.country,
-                            fundado: data[i].team.founded,
-                            logo: data[i].team.logo,
-                            nacional: data[i].team.national
-                        });
-                        const result = await Equipos.findById(data[i].team.id);
-                        if(result == null || result == 0){
-                            const save = await equipos.save();
-                        }else{
-                            res.json({"message": "YA EXISTE ESTE EQUIPO", "value": 302});
-                        }
-                    } catch (error) {
-                        console.log(error+"xd");
+                try {
+                    const equipos = new Equipos({
+                        _id: data[i].team.id,
+                        name: data[i].team.name,
+                        pais: data[i].team.country,
+                        fundado: data[i].team.founded,
+                        logo: data[i].team.logo,
+                        nacional: data[i].team.national
+                    });
+                    const result = Equipos.findById(data[i].team.id);
+
+                    if(result == null || result == 0){
+                        const save =  equipos.save();
+                        message.push({"message": "SE HA GUARDADO CON EXITO", "value": 202});
+                    }else{
+                        message.push({"message": "YA EXISTE ESTE EQUIPO", "value": 302});
                     }
-                })(); 
+
+                } catch (error) {
+                    message.push({"message": "ERROR AL GUARDAR O MODIFICAR UN EQUIPO", "value": 304});
+                }
             }
-            res.json({"message": "SE HA GUARDADO O MODIFICADO CON ÉXITO", "value": 202});
+            res.json(message);
             
         }else{
             res.json({"message": "NO HAY PARTIDOS ACTIVAS DE "+pais, "value": 300});
