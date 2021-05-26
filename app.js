@@ -13,7 +13,6 @@ app.get('/', (req,res) => {
     res.send('hello world!');
 });
 
-
 const paisligaRoute = require('./routes/paisligas');
 const fixtureRoute = require('./routes/fixture');
 const equiposRoute = require('./routes/equipos');

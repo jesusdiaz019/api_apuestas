@@ -93,7 +93,7 @@ router.post('/save', async (req, res) => {
                 res.json([{"message": "ERROR INTERNO DE LA API", "value": 302}]);
             }
         }else{
-            res.json([{"message": "NO HAY LIGAS ACTIVAS DE "+pais, "value": 300}]);
+            res.json([{"message": "NO HAY LIGAS ACTIVAS DE "+pais.toUpperCase(), "value": 300}]);
         }
         });
     } catch (error) {
