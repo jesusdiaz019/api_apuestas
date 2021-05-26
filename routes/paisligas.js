@@ -83,17 +83,17 @@ router.post('/save', async (req, res) => {
                 });
                 if(result.n == 0){
                     const save = paisliga.save();
-                    res.json({"message": "SE HA GUARDADO CON ÉXITO", "value": 202});
+                    res.json([{"message": "SE HA GUARDADO CON ÉXITO", "value": 202}]);
                 }else if(result.nModified == 0){
-                    res.json({"message": "NO HUBO CAMBIOS AL MODIFICAR", "value": 200});
+                    res.json([{"message": "NO HUBO CAMBIOS AL MODIFICAR", "value": 200}]);
                 }else{
-                    res.json({"message": "SE HA MODIFICADO CON ÉXITO", "value": 204});
+                    res.json([{"message": "SE HA MODIFICADO CON ÉXITO", "value": 204}]);
                 }
             } catch (error) {
-                console.log(error+"xd");
+                res.json([{"message": "ERROR INTERNO DE LA API", "value": 302}]);
             }
         }else{
-            res.json({"message": "NO HAY LIGAS ACTIVAS DE "+pais, "value": 300});
+            res.json([{"message": "NO HAY LIGAS ACTIVAS DE "+pais, "value": 300}]);
         }
         });
     } catch (error) {
