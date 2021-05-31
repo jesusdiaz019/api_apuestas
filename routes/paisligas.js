@@ -51,7 +51,6 @@ router.post('/save', async (req, res) => {
         }else if(api_res.body.response != 0){
             var data = api_res.body.response;
             var list = [];
-            var message = [];
             var today = new Date();
             var dd = String(today.getDate()).padStart(2, '0');
             var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
@@ -70,31 +69,36 @@ router.post('/save', async (req, res) => {
                     });   
                 }            
             }
+            (async () => {
             try {
                 const paisliga = new Paisliga({
                     pais: data[0].country.name,
                     ligas: list,
                 });
-                const result = Paisliga.updateOne({
+                const result = await Paisliga.updateOne({
                     pais: data[0].country.name
                 },
                 {
                     ligas: paisliga.ligas
                 });
+                console.log(result);
                 if(result.n == 0){
                     const save = paisliga.save();
                     res.json([{"message": "SE HA GUARDADO CON ÉXITO", "value": 202}]);
                 }else if(result.nModified == 0){
                     res.json([{"message": "NO HUBO CAMBIOS AL MODIFICAR", "value": 200}]);
+                    
                 }else{
                     res.json([{"message": "SE HA MODIFICADO CON ÉXITO", "value": 204}]);
                 }
             } catch (error) {
                 res.json([{"message": "ERROR INTERNO DE LA API", "value": 302}]);
             }
+        })();
         }else{
-            res.json([{"message": "NO HAY LIGAS ACTIVAS DE "+pais.toUpperCase(), "value": 300}]);
+            res.json([{"message": "NO HAY LIGAS ACTIVAS DE "+pais, "value": 300}]);
         }
+        
         });
     } catch (error) {
         console.log(error)
