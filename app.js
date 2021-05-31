@@ -1,18 +1,10 @@
 const express = require('express');
-var http = require("http");
 const app = express();
 const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv/config');
-const port = process.env.PORT || 3000;
-var server = http.createServer(app);
-const io = require('socket.io')(server, {
-    cors: {
-        origin: "*",
-    },
-});
 
-//app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 3000);
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -42,14 +34,6 @@ mongoose.connect(
     .then(() => console.log('Base de datos conectada'))
     .catch(e => console.log(e))
 
-io.on('connection', (socket) => {
-    console.log('new connection');
-    console.log(socket.id, "has joined");
-    socket.on("/test",(msg)=>{
-        console.log(msg);
-    })
-});
-
-server.listen(port,() =>{
-    console.log(`Server on port `+port)
-});
+app.listen(app.get('port'),() =>{
+    console.log(`Server on port ${app.get('port')}`)
+});   
