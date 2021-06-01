@@ -69,37 +69,38 @@ router.post('/save', async (req, res) => {
                     });   
                 }            
             }
-            (async () => {
-            try {
-                const paisliga = new Paisliga({
-                    pais: data[0].country.name,
-                    ligas: list,
-                });
-                const result = await Paisliga.updateOne({
-                    pais: data[0].country.name
-                },
-                {
-                    ligas: paisliga.ligas
-                });
-                console.log(result);
-                if(result.n == 0){
-                    console.log(list);
-                    if(list != 0 || list != null || list != undefined){
-                        const save = paisliga.save();
-                        res.json([{"message": "SE HA GUARDADO CON ÉXITO", "value": 202}]);
-                    }else{
-                        res.json([{"message": "NO HAY LIGAS ACTIVAS DE "+pais, "value": 300}]);
+            if(list != null && list != 0){
+                (async () => {
+                    try {
+                        const paisliga = new Paisliga({
+                            pais: data[0].country.name,
+                            ligas: list,
+                        });
+                        
+                        const result = await Paisliga.updateOne({
+                            pais: data[0].country.name
+                        },
+                        {
+                            $push: {ligas: paisliga.ligas}
+                        });
+                        
+                        
+                        if(result.n == 0){
+                            const save = paisliga.save();
+                            res.json([{"message": "SE HA GUARDADO CON ÉXITO", "value": 202}]);
+                        }else if(result.nModified == 0){
+                            res.json([{"message": "NO HUBO CAMBIOS AL MODIFICAR", "value": 200}]);
+                            
+                        }else if(result.nModified == 1){
+                            res.json([{"message": "SE HA MODIFICADO CON ÉXITO", "value": 204}]);
+                        }
+                    } catch (error) {
+                        res.json([{"message": "ERROR INTERNO DE LA API", "value": 302, "error": error.toString()}]);
                     }
-                }else if(result.nModified == 0){
-                    res.json([{"message": "NO HUBO CAMBIOS AL MODIFICAR", "value": 200}]);
-                    
-                }else{
-                    res.json([{"message": "SE HA MODIFICADO CON ÉXITO", "value": 204}]);
-                }
-            } catch (error) {
-                res.json([{"message": "ERROR INTERNO DE LA API", "value": 302}]);
+                })();
+            }else{
+                res.json([{"message": "SE ENCONTRARON LIGAS ANTIGUAS", "value": 304}]);
             }
-        })();
         }else{
             res.json([{"message": "NO HAY LIGAS ACTIVAS DE "+pais, "value": 300}]);
         }
