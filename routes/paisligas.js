@@ -83,7 +83,8 @@ router.post('/save', async (req, res) => {
                 });
                 console.log(result);
                 if(result.n == 0){
-                    if(list != 0 || list != null){
+                    console.log(list);
+                    if(list != 0 || list != null || list != undefined){
                         const save = paisliga.save();
                         res.json([{"message": "SE HA GUARDADO CON ÉXITO", "value": 202}]);
                     }else{
